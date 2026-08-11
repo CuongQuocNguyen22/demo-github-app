@@ -3,110 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Game Rắn Săn Mồi (Snake Game) - Cyberpunk Edition</title>
-  <meta name="description" content="Trò chơi Rắn Săn Mồi phong cách Cyberpunk Neon hiện đại với hiệu ứng âm thanh sống động và nhiều chế độ chơi." />
+  <title>TRÍ TUỆ BỎNG CHÂN - Game Trắc Nghiệm Rớt Sàn A B C D</title>
+  <meta name="description" content="Trò chơi trắc nghiệm tương tác đồ họa sinh động: Điều khiển nhân vật di chuyển trên 4 ô đáp án A, B, C, D. Đáp án sai sẽ bị rớt sàn!" />
   
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <div class="game-container">
-    <!-- Header -->
+  <div class="app-container">
+    <!-- Header Bar -->
     <header class="header">
-      <div class="title-wrap">
-        <span style="font-size: 1.5rem;">🐍</span>
-        <h1 class="game-title">RẮN SĂN MỒI</h1>
+      <div class="logo-wrap">
+        <span class="logo-icon">🔥</span>
+        <div>
+          <h1 class="title">TRÍ TUỆ BỎNG CHÂN</h1>
+          <p class="subtitle">Sàn Đấu Đáp Án A - B - C - D</p>
+        </div>
       </div>
-      <p class="subtitle">Cyberpunk Neon Edition</p>
+
+      <div class="header-actions">
+        <select id="topicSelect" class="topic-select" title="Chọn Chủ Đề Câu Hỏi">
+          <option value="general">🧠 Kiến Thức Tổng Hợp</option>
+          <option value="science">🧪 Khoa Học & Tự Nhiên</option>
+          <option value="riddles">🧩 Đố Mẹo & Hại Não</option>
+          <option value="geography">🌍 Địa Lý & Lịch Sử</option>
+          <option value="math">🔢 Toán Học Vui</option>
+        </select>
+        <button id="btnSound" class="btn-icon" title="Bật/Tắt Âm Thanh">🔊</button>
+      </div>
     </header>
 
-    <!-- Scoreboard -->
-    <div class="score-board">
-      <div class="score-card">
-        <span class="score-label">Điểm Số</span>
-        <span class="score-val" id="score">0</span>
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <span class="stat-label">Tiến Trình</span>
+        <span class="stat-value" id="questionProgress">Câu 1 / 10</span>
       </div>
-      <div class="score-card">
-        <span class="score-label">Kỷ Lục</span>
-        <span class="score-val high-score-val" id="highScore">0</span>
+      <div class="stat-card">
+        <span class="stat-label">Thời Gian</span>
+        <span class="stat-value timer" id="timerVal">10s</span>
       </div>
-      <div class="score-card">
-        <span class="score-label">Đã Ăn</span>
-        <span class="score-val food-count-val" id="foodCount">0</span>
-      </div>
-    </div>
-
-    <!-- Options Bar -->
-    <div class="options-bar">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <label for="difficultySelect" style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Độ Khó:</label>
-        <select id="difficultySelect" class="difficulty-select">
-          <option value="easy">🟢 Dễ (Xuyên Tường)</option>
-          <option value="medium" selected>🟡 Trung Bình (Bình Thường)</option>
-          <option value="hard">🔴 Khó (Có Vật Cản)</option>
-        </select>
-      </div>
-
-      <button id="btnSound" class="sound-btn" title="Bật/Tắt Âm Thanh">🔊</button>
-    </div>
-
-    <!-- Canvas Play Area -->
-    <div class="canvas-wrapper">
-      <canvas id="gameCanvas" width="400" height="400"></canvas>
-
-      <!-- Overlay Screen (Paused / Initial) -->
-      <div id="canvasOverlay" class="canvas-overlay">
-        <div class="overlay-text" id="overlayText">SẴN SÀNG CHƠI?</div>
-        <div class="overlay-subtext" id="overlaySubtext">Bấm nút "Bắt Đầu" bên dưới để chơi!</div>
+      <div class="stat-card">
+        <span class="stat-label">Điểm Số</span>
+        <span class="stat-value score" id="scoreVal">0</span>
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <button id="btnStart" class="btn btn-primary">🎮 Bắt Đầu</button>
-      <button id="btnPause" class="btn btn-secondary">⏸ Tạm Dừng</button>
+    <!-- Question Card & 4 Options -->
+    <div class="question-card">
+      <div class="question-text" id="questionText">Đang tải câu hỏi...</div>
+      
+      <div class="options-grid">
+        <div class="option-item option-a" id="optA">
+          <span class="option-key">A</span>
+          <span class="option-val" id="textOptA">---</span>
+        </div>
+        <div class="option-item option-b" id="optB">
+          <span class="option-key">B</span>
+          <span class="option-val" id="textOptB">---</span>
+        </div>
+        <div class="option-item option-c" id="optC">
+          <span class="option-key">C</span>
+          <span class="option-val" id="textOptC">---</span>
+        </div>
+        <div class="option-item option-d" id="optD">
+          <span class="option-key">D</span>
+          <span class="option-val" id="textOptD">---</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Food Legend -->
-    <div class="food-legend">
-      <div class="legend-item">
-        <span class="dot dot-red"></span> Táo Đỏ (+10)
-      </div>
-      <div class="legend-item">
-        <span class="dot dot-gold"></span> Táo Vàng (+30)
-      </div>
-      <div class="legend-item">
-        <span class="dot dot-blue"></span> Táo Xanh (+20)
+    <!-- Canvas Game Arena -->
+    <div class="arena-wrapper">
+      <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+      <!-- Banner Result Overlay -->
+      <div id="bannerOverlay" class="banner-overlay">
+        <div id="bannerCard" class="banner-card">
+          <div id="bannerTitle" class="banner-title">CHÍNH XÁC!</div>
+          <div id="bannerDesc" class="banner-desc">Bạn nhận được +10 điểm</div>
+        </div>
       </div>
     </div>
 
-    <!-- Touch D-Pad for Mobile -->
-    <div class="dpad-container">
-      <button class="dpad-btn d-up" data-dir="up">▲</button>
-      <button class="dpad-btn d-left" data-dir="left">◀</button>
-      <button class="dpad-btn d-right" data-dir="right">▶</button>
-      <button class="dpad-btn d-down" data-dir="down">▼</button>
-    </div>
+    <!-- Controls Container -->
+    <div class="controls-container">
+      <div class="kbd-instructions">
+        Di chuyển nhân vật: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> hoặc phím <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd>
+      </div>
 
-    <!-- Keyboard Hint -->
-    <div class="kbd-hint">
-      Điều khiển bằng phím <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> | Tạm dừng: <kbd>Space</kbd>
+      <div class="dpad">
+        <button class="dpad-btn dpad-up" data-dir="up">▲</button>
+        <button class="dpad-btn dpad-left" data-dir="left">◀</button>
+        <button class="dpad-btn dpad-right" data-dir="right">▶</button>
+        <button class="dpad-btn dpad-down" data-dir="down">▼</button>
+      </div>
     </div>
   </div>
 
   <!-- Game Over Modal -->
   <div id="modalBackdrop" class="modal-backdrop">
-    <div class="modal-card">
-      <div style="font-size: 2.5rem;">💀</div>
-      <h2 class="game-over-title">GAME OVER</h2>
-      
-      <div class="final-score-box">
-        <span style="color: var(--text-muted); font-size: 0.9rem;">Tổng Điểm Của Bạn</span>
-        <span id="finalScore" style="font-size: 2.2rem; font-weight: 800; color: var(--neon-cyan); font-family: 'Press Start 2P', cursive;">0</span>
-        <div id="newHighScoreBadge" class="new-high-score-badge" style="display: none;">🏆 KỶ LỤC MỚI!</div>
+    <div class="modal-box">
+      <div style="font-size: 3rem; margin-bottom: 8px;">🏆</div>
+      <h2 class="modal-title">HOÀN THÀNH LƯỢT CHƠI</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Bạn đã hoàn thành bộ câu hỏi!</p>
+
+      <div class="final-score-container">
+        <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Tổng Điểm Đạt Được</div>
+        <div id="finalScoreVal" class="final-score-val">0</div>
+        <div id="finalAccuracy" style="font-size: 0.95rem; font-weight: 700; color: var(--neon-cyan);">Đúng: 0 / 10 câu (0%)</div>
+        <div id="rankBadge" style="margin-top: 8px; font-weight: 800; font-size: 1.05rem; color: var(--neon-gold);">Học Bá Thông Thái 🌟</div>
       </div>
 
-      <button id="btnRestart" class="btn btn-primary" style="width: 100%;">🔄 Chơi Lại Ván Mới</button>
+      <button id="btnRestart" class="btn-primary">🔄 Chơi Lượt Mới</button>
     </div>
   </div>
 
